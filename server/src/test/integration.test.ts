@@ -74,7 +74,32 @@ describe('graphQL', function() {
       if (res.errors) throw res.errors;
       expect(res.data.networkSnapshots).toEqual([snapshot]);
     });
+
+    it('latestBlocks', async () => {
+      const block = {
+        createdAt: new Date().toISOString(),
+        blockHeight: 9001,
+      };
+      const latestBlocks = [
+        JSON.stringify(block)
+      ];
+      redis.lrange = jest.fn(() => latestBlocks);
+      const query = gql`
+        query {
+          latestBlocks {
+            createdAt
+            blockHeight
+          }
+        }
+      `;
+      const res = await this.query({ query });
+      if (res.errors) throw res.errors;
+      expect(res.data.latestblocks).toEqual([block]);
+    });
   });
+
+
+  // --- Subscriptions --- //
 
   describe('Subscription', () => {
     it('newBlock', (done) => {

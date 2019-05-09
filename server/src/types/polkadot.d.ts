@@ -8,4 +8,9 @@ declare namespace Polkadot {
       knownAddresses: string[]
     };
   }
+
+  interface BlockSnapshot {
+    createdAt: string;
+    blockHeight: string;
+  }
 }

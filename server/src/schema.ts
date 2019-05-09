@@ -32,6 +32,7 @@ type Node {
 type Query {
   networkInfo: NetworkInfo
   networkSnapshots: [NetworkSnapshot]
+  latestBlocks: [Block]
 }
 
 type Subscription {

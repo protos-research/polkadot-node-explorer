@@ -57,13 +57,21 @@ async function subscribe() {
 
   return await api.rpc.chain.subscribeNewHead((header) => {
     logger.debug(`[polkadot] new block added`);
+    const createdAt = new Date().toISOString();
+
     pubsub.publish(events.BLOCK_ADDED, {
       newBlock: {
         blockHeight: parseInt(header.blockNumber.toString()),
         createdAt: new Date(),
       }
     });
-    redis.set(redisKey.BLOCK_HEIGHT, header.blockNumber.toString());
+    const block = {
+      createdAt,
+      blockNumber: parseInt(header.blockNumber.toString())
+    };
+    console.log('block', block);
+    redis.lpush(redisKey.LATEST_BLOCKS, JSON.stringify(block));
+    redis.ltrim(redisKey.LATEST_BLOCKS, 0, config.BLOCK_HISTORY_LIMIT);
   });
 }
 

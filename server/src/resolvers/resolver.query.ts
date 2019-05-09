@@ -10,4 +10,8 @@ export default {
     // Note: to optimize for performance, we can always let the client parse this
     return networkSnapshots.map(JSON.parse);
   },
+  latestBlocks: async () => {
+    const blocks = await PolkadotNetwork.getLatestBlocks();
+    return blocks.map(JSON.parse);
+  },
 };
