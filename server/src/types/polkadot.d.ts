@@ -11,6 +11,6 @@ declare namespace Polkadot {
 
   interface BlockSnapshot {
     createdAt: string;
-    blockHeight: string;
+    blockHeight: number;
   }
 }

@@ -65,11 +65,10 @@ async function subscribe() {
         createdAt: new Date(),
       }
     });
-    const block = {
+    const block: Polkadot.BlockSnapshot = {
       createdAt,
-      blockNumber: parseInt(header.blockNumber.toString())
+      blockHeight: parseInt(header.blockNumber.toString())
     };
-    console.log('block', block);
     redis.lpush(redisKey.LATEST_BLOCKS, JSON.stringify(block));
     redis.ltrim(redisKey.LATEST_BLOCKS, 0, config.BLOCK_HISTORY_LIMIT);
   });

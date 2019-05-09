@@ -94,7 +94,7 @@ describe('graphQL', function() {
       `;
       const res = await this.query({ query });
       if (res.errors) throw res.errors;
-      expect(res.data.latestblocks).toEqual([block]);
+      expect(res.data.latestBlocks).toEqual([block]);
     });
   });
 
