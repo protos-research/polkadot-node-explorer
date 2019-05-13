@@ -1,8 +1,10 @@
 export const redisKey =  {
   NETWORK_INFO: 'networkInfo',
   NETWORK_STATE: 'networkState',
+  NETWORK_NODES: 'networkNodes',
   NETWORK_SNAPSHOTS: 'networkSnapshots',
   LATEST_BLOCKS: 'latestBlocks',
+  GEOIP_CACHE: 'geoIpCache',
 };
 
 export const config = {

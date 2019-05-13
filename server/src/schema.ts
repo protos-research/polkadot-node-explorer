@@ -13,11 +13,12 @@ type NetworkInfo {
   chain: String
   nodeName: String
   nodeVersion: String
+  nodes: [Node]
 }
 
 type NetworkSnapshot {
   createdAt: String
-  nodes: [Node]
+  nodeCount: Int
 }
 
 type Node {

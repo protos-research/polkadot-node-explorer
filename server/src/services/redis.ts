@@ -13,6 +13,8 @@ export default {
   lrange: promisify(client.lrange).bind(client),
   ltrim: promisify(client.ltrim).bind(client),
   set: promisify(client.set).bind(client),
+  get: promisify(client.get).bind(client),
   hmset: promisify(client.hmset).bind(client),
   hgetall: promisify(client.hgetall).bind(client),
+  batch: promisify(client.batch).bind(client),
 };

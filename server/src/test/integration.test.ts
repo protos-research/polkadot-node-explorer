@@ -33,27 +33,42 @@ describe('graphQL', function() {
         'nodeName': 'parity-polkadot',
         'nodeVersion': '0.4.0',
       };
+      const nodes = [{}];
+      const nodesWithGeoIp = [
+        {ipAddress: '0.0.0.0', latLong: [49.24892, -123.1502117]}
+      ];
       redis.hgetall = jest.fn(() => networkInfo);
+      redis.get = jest.fn(() => JSON.stringify(nodes));
+      redis.batch = jest.fn(() => nodesWithGeoIp);
+
       const query = gql`
         query {
           networkInfo {
             chain
   	        nodeVersion
  		        nodeName
+            nodes {
+              ipAddress
+              latLong
+            }
           }
         }
       `;
       const res = await this.query({ query });
+      res.errors && console.error(JSON.stringify(res.errors, undefined, 2));
       if (res.errors) throw res.errors;
-      expect(res.data.networkInfo).toEqual(networkInfo);
+      expect({
+        ...res.data.networkInfo
+      }).toEqual({
+        ...networkInfo,
+        nodes: nodesWithGeoIp,
+      });
     });
 
     it('networkSnapshots', async () => {
       const snapshot = {
         createdAt: new Date().toISOString(),
-        nodes: [
-          {ipAddress: '0.0.0.0', latLong: [49.24892, -123.1502117]}
-        ]
+        nodeCount: 1
       };
       const networkSnapshots = [
         JSON.stringify(snapshot)
@@ -63,10 +78,7 @@ describe('graphQL', function() {
         query {
           networkSnapshots {
             createdAt
-            nodes {
-              ipAddress
-              latLong
-            }
+            nodeCount
           }
         }
       `;

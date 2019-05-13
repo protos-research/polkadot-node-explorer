@@ -1,5 +1,6 @@
 const geoip = require('geoip-lite');
 const _ = require('lodash');
+const async = require('async-q');
 
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import logger from './logger';
@@ -9,6 +10,9 @@ import pubsub from '../services/pubsub';
 
 import NetworkState from '@polkadot/types/rpc/NetworkState';
 import { ProviderInterface } from '@polkadot/rpc-provider/types';
+import { setGeoIp } from './ipApi';
+import { Polkadot } from 'polkadot';
+
 
 const provider: ProviderInterface = new WsProvider(config.POLKADOT_HOST);
 
@@ -18,18 +22,23 @@ async function recordNetworkSnapshot() {
 
   // ref: https://polkadot.js.org/api/METHODS_RPC.html#json-rpc
   return await api.rpc.system.networkState((state: NetworkState): void => {
-    const nodes = [
+    const nodes: Polkadot.NodeState[] = [
       ...peersReducer(state.get('notConnectedPeers')),
       ...peersReducer(state.get('connectedPeers'))
     ];
 
-    const networkSnapshot = {
+    const networkSnapshot: Schema.NetworkSnapshot = {
       createdAt: new Date().toISOString(),
-      nodes: nodes.map(appendGeoIP),
+      nodeCount: nodes.length,
     };
 
+    redis.set(redisKey.NETWORK_NODES, JSON.stringify(nodes.map(appendGeoIPLite)));
     redis.lpush(redisKey.NETWORK_SNAPSHOTS, JSON.stringify(networkSnapshot));
     redis.ltrim(redisKey.NETWORK_SNAPSHOTS, 0, config.SNAPSHOT_LIMIT);
+
+    async.mapLimit(nodes, 2, (node: Polkadot.NodeState) => {
+      return setGeoIp(node.ipAddress);
+    });
   });
 }
 
@@ -65,7 +74,7 @@ async function subscribe() {
         createdAt: new Date(),
       }
     });
-    const block: Polkadot.BlockSnapshot = {
+    const block: Schema.Block = {
       createdAt,
       blockHeight: parseInt(header.blockNumber.toString())
     };
@@ -96,7 +105,7 @@ function getAddress(addresses: string[]): string {
   return (address.match(/ip4\/(.*)\/tcp/i) || [])[1] || '';
 }
 
-function appendGeoIP(node: Polkadot.NodeState) {
+function appendGeoIPLite(node: Polkadot.NodeState) {
   const location = geoip.lookup(node.ipAddress) || {};
   return {
     ...node,
