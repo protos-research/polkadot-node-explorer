@@ -27,7 +27,8 @@ type Node {
   country: String
   region: String
   city: String
-  latLong: [Float]
+  lat: Float
+  lon: Float
 }
 
 type Query {

@@ -19,25 +19,39 @@ export async function setGeoIp(ip: string): Promise<void> {
 
 export async function appendGeoIp(nodes: Polkadot.Node[]): Promise<Polkadot.Node[]> {
   const commands: string[][] = nodes.map(node => ['HGETALL', `${redisKey.GEOIP_CACHE}:${node.ipAddress}`]);
-  const geoIpData = await redis.batch(commands);
+  const geoIpData: GeoIP[] = await redis.batchExec<GeoIP>(commands);
+  // console.log('nodes', nodes.map(n => ({ip: n.ipAddress, country: n.country})));
 
   return nodes.map((node, i) => {
     const geoIp = geoIpData[i];
-    return {
-      ...node,
-      ...geoIp
-    };
+    return mergeGeoIP(geoIp, node);
   });
+}
+
+function mergeGeoIP(data: GeoIP, node: Polkadot.Node): Polkadot.Node {
+  if (!data) {
+    return node;
+  }
+
+  return {
+    ...node,
+    country: data.countryCode,
+    region: data.regionName,
+    city: data.city,
+    lat: data.lat && parseFloat(data.lat),
+    lon: data.lon && parseFloat(data.lon)
+  };
 }
 
 interface GeoIP {
   city: string;
   region: string;
+  regionName: string;
   country: string;
   countryCode: string;
   isp: string;
-  lat: number;
-  lon: number;
+  lat: string;
+  lon: string;
   query: string;
   status: 'success' | 'fail';
 }

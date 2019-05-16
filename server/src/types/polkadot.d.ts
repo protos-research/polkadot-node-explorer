@@ -12,7 +12,8 @@ declare namespace Polkadot {
     country: string;
     region: string;
     city: string;
-    latLong: number[];
+    lat: number;
+    lon: number;
   }
 
   interface Peer {

@@ -14,6 +14,8 @@ import redis from '../services/redis';
 import { constructTestServer } from './__utils';
 import pubsub from '../services/pubsub';
 
+import Polkadot from '../types/polkadot';
+
 describe('graphQL', function() {
   beforeAll(async () => {
 
@@ -33,13 +35,15 @@ describe('graphQL', function() {
         'nodeName': 'parity-polkadot',
         'nodeVersion': '0.4.0',
       };
-      const nodes = [{}];
+      const nodes = [{ipAddress: '0.0.0.0'}];
       const nodesWithGeoIp = [
-        {ipAddress: '0.0.0.0', latLong: [49.24892, -123.1502117]}
+        {ipAddress: '0.0.0.0', lat: 49.24892, lon: -123.1502117}
       ];
       redis.hgetall = jest.fn(() => networkInfo);
       redis.get = jest.fn(() => JSON.stringify(nodes));
-      redis.batch = jest.fn(() => nodesWithGeoIp);
+      redis.batchExec = jest.fn(function() {
+        return new Promise((resolve, reject) => resolve(nodesWithGeoIp));
+      });
 
       const query = gql`
         query {
@@ -49,7 +53,8 @@ describe('graphQL', function() {
  		        nodeName
             nodes {
               ipAddress
-              latLong
+              lat
+              lon
             }
           }
         }

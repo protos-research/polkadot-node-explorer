@@ -107,10 +107,12 @@ function getAddress(addresses: string[]): string {
 
 function appendGeoIPLite(node: Polkadot.NodeState) {
   const location = geoip.lookup(node.ipAddress) || {};
+  const [lat, lon] = location.ll || new Array(2);
   return {
     ...node,
     ..._.pick(location, ['country', 'region', 'city']),
-    latLong: location.ll,
+    lat,
+    lon,
   };
 }
 
