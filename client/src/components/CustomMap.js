@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import tooltip from "wsdm-tooltip"
+import tooltip from 'wsdm-tooltip'
 import {
   ComposableMap,
   ZoomableGroup,
@@ -23,16 +23,16 @@ class CustomMap extends Component {
 
   componentDidMount() {
     this.tip = tooltip({
-      className: "custom-tooltip",
+      className: 'custom-tooltip',
       styles: {
-        "font-size": "0.75rem",
-        "color": "black",
-        "background-color": "white",
-        "font-family": "Helvetica",
-        "border-radius": "3px",
-        "width": "100px",
-        "text-align": "left",
-        "line-height": "1.4",
+        'font-size': '0.75rem',
+        color: 'black',
+        'background-color': 'white',
+        'font-family': 'Helvetica',
+        'border-radius': '3px',
+        width: '100px',
+        'text-align': 'left',
+        'line-height': '1.4',
       },
     })
     this.tip.create()
@@ -62,7 +62,10 @@ class CustomMap extends Component {
           }}
         >
           <ZoomableGroup center={[0, 20]} disablePanning>
-            <Geographies geography="world-50m-with-population.json" disableOptimization>
+            <Geographies
+              geography="world-50m-with-population.json"
+              disableOptimization
+            >
               {(geographies, projection) =>
                 geographies.map((geography, i) => {
                   return (
@@ -75,7 +78,9 @@ class CustomMap extends Component {
                       onMouseLeave={this.handleMouseLeave}
                       style={{
                         default: {
-                          fill: nodeScale(this.getNumOfNodes(geography.properties.iso_a2)),
+                          fill: nodeScale(
+                            this.getNumOfNodes(geography.properties.iso_a2)
+                          ),
                           stroke: '#8c8c8c',
                           strokeWidth: 0.75,
                           outline: 'none',
@@ -106,7 +111,7 @@ class CustomMap extends Component {
 
   handleMouseMove(geography, evt) {
     const numOfNodes = this.getNumOfNodes(geography.properties.iso_a2)
-    const nodeText = numOfNodes === 1 ? "Node" : "Nodes"
+    const nodeText = numOfNodes === 1 ? 'Node' : 'Nodes'
     this.tip.show(`
       <div>
         ${geography.properties.name}
@@ -124,7 +129,7 @@ class CustomMap extends Component {
     this.tip.hide()
   }
 
-  getNumOfNodes = (country) => {
+  getNumOfNodes = country => {
     const { nodesPerCountry } = this.props
     if (nodesPerCountry[country] !== undefined) {
       return nodesPerCountry[country]

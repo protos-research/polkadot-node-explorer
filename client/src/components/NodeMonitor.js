@@ -62,34 +62,28 @@ class NodeMonitor extends React.Component {
   componentDidMount() {
     const { client } = this.props
     this.client = client
-    this.client.subscribe({
-      query: Queries.BLOCK_SUBSCRIPTION
-    })
+    this.client
+      .subscribe({
+        query: Queries.BLOCK_SUBSCRIPTION,
+      })
       .subscribe({
         next: ({ data }) => {
           const { newBlock = {} } = data
 
-          const oldBtcDataSet = this.state.lineChartData.datasets[0]
-          const newBtcDataSet = { ...oldBtcDataSet }
-          newBtcDataSet.data.push(newBlock.blockHeight)
+          const oldDataSet = this.state.lineChartData.datasets[0]
+          const newDataSet = { ...oldDataSet }
+          newDataSet.data.push(newBlock.blockHeight)
 
           const newChartData = {
             ...this.state.lineChartData,
-            datasets: [newBtcDataSet],
+            datasets: [newDataSet],
             labels: this.state.lineChartData.labels.concat(
               new Date().toLocaleTimeString()
             ),
           }
           this.setState({ lineChartData: newChartData })
-        }
-      });
-  }
-
-  recordBlockTime = (blockHeight) => {
-    const time = Date.now() / 1000
-    const { blockTimes } = this.state
-    const newBlockTimes = [time, ...blockTimes].slice(0, 100)
-    this.setState({ blockTimes: newBlockTimes, blockHeight })
+        },
+      })
   }
 
   componentWillUnmount() {
@@ -134,6 +128,6 @@ class NodeMonitor extends React.Component {
 }
 
 export default compose(
-  withStyles(styles), 
+  withStyles(styles),
   withApollo
 )(NodeMonitor)

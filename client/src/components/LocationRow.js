@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-import { countries } from '../utils/countries';
+import { countries } from '../utils/countries'
 
 const styles = theme => ({
   numberOfNodes: {

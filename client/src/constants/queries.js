@@ -28,7 +28,7 @@ const GET_LATEST_BLOCKS = gql`
 const GET_IP_DETAILS = gql`
   query ipInfo($ipAddress: String!) {
     ipInfo(ipAddress: $ipAddress)
-    @rest(type: "IpInfo", path: "{args.ipAddress}") {
+      @rest(type: "IpInfo", path: "{args.ipAddress}") {
       as
       city
       country

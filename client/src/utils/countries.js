@@ -1,7 +1,7 @@
-import countries from 'i18n-iso-countries';
-import locale from 'i18n-iso-countries/langs/en.json';
+import countries from 'i18n-iso-countries'
+import locale from 'i18n-iso-countries/langs/en.json'
 
-countries.registerLocale(locale);
+countries.registerLocale(locale)
 
-export default {};
-export { countries };
+export default {}
+export { countries }

@@ -6,7 +6,7 @@ import CustomHeader from '../components/CustomHeader'
 import LocationRow from '../components/LocationRow'
 import CustomProgress from '../components/CustomProgress'
 import Anchor from '../components/Anchor'
-import { Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core'
 
 const styles = theme => ({
   root: {
@@ -20,17 +20,21 @@ const styles = theme => ({
 class NodeLocations extends React.Component {
   renderList = () => {
     const { nodesPerCountry } = this.props
-    const countriesSorted = Object.keys(nodesPerCountry).sort(function (a, b) {
+    const countriesSorted = Object.keys(nodesPerCountry).sort(function(a, b) {
       return nodesPerCountry[b] - nodesPerCountry[a]
     })
     const numOfNodesSorted = countriesSorted.map(key => nodesPerCountry[key])
-    return (
-      countriesSorted.map((country, index) => {
-        if (index < 9) {
-          return <LocationRow country={country} numberOfNodes={numOfNodesSorted[index]} />
-        }
-      })
-    )
+    return countriesSorted.map((country, index) => {
+      if (index < 9) {
+        return (
+          <LocationRow
+            country={country}
+            numberOfNodes={numOfNodesSorted[index]}
+          />
+        )
+      }
+      return null
+    })
   }
   render() {
     const { classes, nodesPerCountry } = this.props

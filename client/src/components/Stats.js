@@ -1,5 +1,5 @@
 import React from 'react'
-import { Query, Subscription, withApollo, compose } from 'react-apollo'
+import { Query, withApollo, compose } from 'react-apollo'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 
@@ -16,21 +16,22 @@ const styles = theme => ({
 class Stats extends React.Component {
   state = {
     blockHeight: null,
-    blockTimes: []
+    blockTimes: [],
   }
 
   componentDidMount() {
-    const {client} = this.props
+    const { client } = this.props
     this.client = client
-    this.client.subscribe({
-      query: Queries.BLOCK_SUBSCRIPTION
-    })
-    .subscribe({
-      next: ({ data }) => {
-        const { newBlock={} } = data
-        this.recordBlockTime(newBlock.blockHeight)
-      }
-    });
+    this.client
+      .subscribe({
+        query: Queries.BLOCK_SUBSCRIPTION,
+      })
+      .subscribe({
+        next: ({ data }) => {
+          const { newBlock = {} } = data
+          this.recordBlockTime(newBlock.blockHeight)
+        },
+      })
   }
 
   componentWillUnmount() {
@@ -66,7 +67,7 @@ class Stats extends React.Component {
             </Query>
           </Grid>
           <Grid item xs={3}>
-            {this.renderBlockHeight()}  
+            {this.renderBlockHeight()}
           </Grid>
           <Grid item xs={3}>
             {this.renderLastBlock()}
@@ -80,14 +81,21 @@ class Stats extends React.Component {
   }
 
   renderBlockHeight = () => {
-    return <StatsCard size="small" label="Block Height" data={this.state.blockHeight} />
+    return (
+      <StatsCard
+        size="small"
+        label="Block Height"
+        data={this.state.blockHeight}
+      />
+    )
   }
 
   renderLastBlock = () => {
-    const {blockTimes} = this.state
+    const { blockTimes } = this.state
     const [current, prev] = blockTimes
 
-    const lastBlock = blockTimes.length >= 2 ? (current - prev).toPrecision(2) : null
+    const lastBlock =
+      blockTimes.length >= 2 ? (current - prev).toPrecision(2) : null
 
     return (
       <StatsCard
@@ -100,17 +108,17 @@ class Stats extends React.Component {
   }
 
   renderAverage = () => {
-    const {blockTimes} = this.state
+    const { blockTimes } = this.state
 
     const intervals = blockTimes.reduce((intervals, time, i, arr) => {
-      const prevTime = arr[i-1]
+      const prevTime = arr[i - 1]
       if (!!prevTime) {
         intervals.push(prevTime - time)
       }
       return intervals
     }, [])
     const average = intervals.reduce((a, b) => a + b, 0) / intervals.length
-    
+
     return (
       <StatsCard
         size="small"
@@ -121,15 +129,15 @@ class Stats extends React.Component {
     )
   }
 
-  recordBlockTime = (blockHeight) => {
+  recordBlockTime = blockHeight => {
     const time = Date.now() / 1000
-    const {blockTimes} = this.state
+    const { blockTimes } = this.state
     const newBlockTimes = [time, ...blockTimes].slice(0, 100)
-    this.setState({blockTimes: newBlockTimes, blockHeight})
+    this.setState({ blockTimes: newBlockTimes, blockHeight })
   }
 }
 
 export default compose(
-  withStyles(styles), 
+  withStyles(styles),
   withApollo
 )(Stats)
