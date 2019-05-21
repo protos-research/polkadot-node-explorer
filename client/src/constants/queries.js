@@ -16,6 +16,15 @@ const GET_NETWORK_SNAPSHOTS = gql`
   }
 `
 
+const GET_LATEST_BLOCKS = gql`
+  {
+    latestBlocks {
+      createdAt
+      blockHeight
+    }
+  }
+`
+
 const GET_IP_DETAILS = gql`
   query ipInfo($ipAddress: String!) {
     ipInfo(ipAddress: $ipAddress)
@@ -41,6 +50,7 @@ const BLOCK_SUBSCRIPTION = gql`
 
 export default {
   GET_NETWORK_SNAPSHOTS,
+  GET_LATEST_BLOCKS,
   GET_IP_DETAILS,
   BLOCK_SUBSCRIPTION,
 }

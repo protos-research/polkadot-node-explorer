@@ -1,6 +1,7 @@
 import React from 'react'
+import { Query } from 'react-apollo'
 import { withStyles } from '@material-ui/core/styles'
-
+import Hidden from '@material-ui/core/Hidden';
 import Head from '../components/Head'
 import PageContainer from '../components/PageContainer'
 import Centered from '../components/Centered'
@@ -9,6 +10,8 @@ import Stats from '../components/Stats'
 import NodeMonitor from '../components/NodeMonitor'
 import NodeLocations from '../components/NodeLocations'
 import NodeList from '../components/NodeList'
+import Queries from '../constants/queries'
+import LoadingIndicator from '../components/LoadingIndicator'
 
 const styles = theme => ({
   root: {
@@ -36,7 +39,26 @@ class Landing extends React.PureComponent {
             <div className={classes.content}>
               <Stats />
               <NodeMonitor />
-              <NodeLocations />
+              <Query query={Queries.GET_NETWORK_SNAPSHOTS}>
+                {({ loading, error, data }) => {
+                  if (loading) return <LoadingIndicator />
+                  if (error) return <div>Error</div>
+
+                  const nodesToRender = data.networkSnapshots[0].nodes
+
+                  const nodesPerCountry = nodesToRender.reduce((total, node) => {
+                    if (node.country != null) {
+                      total[node.country] = total[node.country] || 0
+                      total[node.country] += 1
+                    }
+                    return total
+                  }, {})
+
+                  return (
+                    <NodeLocations nodesPerCountry={nodesPerCountry} />
+                  )
+                }}
+              </Query>
               <NodeList />
             </div>
           </div>

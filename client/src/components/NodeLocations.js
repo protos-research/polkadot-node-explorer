@@ -18,8 +18,22 @@ const styles = theme => ({
 })
 
 class NodeLocations extends React.Component {
+  renderList = () => {
+    const { nodesPerCountry } = this.props
+    const countriesSorted = Object.keys(nodesPerCountry).sort(function (a, b) {
+      return nodesPerCountry[b] - nodesPerCountry[a]
+    })
+    const numOfNodesSorted = countriesSorted.map(key => nodesPerCountry[key])
+    return (
+      countriesSorted.map((country, index) => {
+        if (index < 9) {
+          return <LocationRow country={country} numberOfNodes={numOfNodesSorted[index]} />
+        }
+      })
+    )
+  }
   render() {
-    const { classes } = this.props
+    const { classes, nodesPerCountry } = this.props
     return (
       <div className={classes.root}>
         <Typography variant="h3" gutterBottom>
@@ -27,22 +41,14 @@ class NodeLocations extends React.Component {
         </Typography>
         <Grid container>
           <Grid item xs={6} style={{ border: '1px solid lightgrey' }}>
-            <CustomMap />
+            <CustomMap nodesPerCountry={nodesPerCountry} />
           </Grid>
           <Grid item xs={3} className={classes.locationInfo}>
             <CustomHeader
               label="Top locations"
               style={{ paddingLeft: '16px', paddingBottom: '24px' }}
             />
-            <LocationRow numberOfNodes="115" country="United States" />
-            <LocationRow numberOfNodes="105" country="Germany" />
-            <LocationRow numberOfNodes="87" country="Japan" />
-            <LocationRow numberOfNodes="23" country="France" />
-            <LocationRow numberOfNodes="19" country="Singapore" />
-            <LocationRow numberOfNodes="18" country="Netherlands" />
-            <LocationRow numberOfNodes="13" country="United Kingdom" />
-            <LocationRow numberOfNodes="8" country="Russia" />
-            <LocationRow numberOfNodes="8" country="Australia" />
+            {this.renderList()}
           </Grid>
           <Grid item xs={3} className={classes.locationInfo}>
             <CustomHeader
