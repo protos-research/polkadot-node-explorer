@@ -1,19 +1,21 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
+import { Typography } from '@material-ui/core'
+
+import { COLOR_DARKEST_GREY, COLOR_MEDIUM_GREY } from '../utils/theme'
 import CustomMap from '../components/CustomMap'
 import CustomHeader from '../components/CustomHeader'
 import LocationRow from '../components/LocationRow'
 import CustomProgress from '../components/CustomProgress'
 import Anchor from '../components/Anchor'
-import { Typography } from '@material-ui/core'
 
 const styles = theme => ({
   root: {
     marginBottom: theme.spacing.unit * 10,
   },
-  locationInfo: {
-    boxShadow: '0px -30px 0px -29px black, 0px 30px 0px -29px black',
+  column: {
+    boxShadow: `0px -30px 0px -29px ${COLOR_MEDIUM_GREY}, 0px 30px 0px -29px ${COLOR_MEDIUM_GREY}`,
   },
 })
 
@@ -24,12 +26,13 @@ class NodeLocations extends React.Component {
       return nodesPerCountry[b] - nodesPerCountry[a]
     })
     const numOfNodesSorted = countriesSorted.map(key => nodesPerCountry[key])
-    return countriesSorted.map((country, index) => {
-      if (index < 9) {
+    return countriesSorted.map((country, i) => {
+      if (i < 9) {
         return (
           <LocationRow
+            index={i}
             country={country}
-            numberOfNodes={numOfNodesSorted[index]}
+            numberOfNodes={numOfNodesSorted[i]}
           />
         )
       }
@@ -44,17 +47,17 @@ class NodeLocations extends React.Component {
           <Anchor id="locations">Node Locations</Anchor>
         </Typography>
         <Grid container>
-          <Grid item xs={6} style={{ border: '1px solid lightgrey' }}>
+          <Grid item xs={6} style={{ backgroundColor: COLOR_DARKEST_GREY }}>
             <CustomMap nodesPerCountry={nodesPerCountry} />
           </Grid>
-          <Grid item xs={3} className={classes.locationInfo}>
+          <Grid item xs={3} className={classes.column}>
             <CustomHeader
               label="Top locations"
               style={{ paddingLeft: '16px', paddingBottom: '24px' }}
             />
             {this.renderList()}
           </Grid>
-          <Grid item xs={3} className={classes.locationInfo}>
+          <Grid item xs={3} className={classes.column}>
             <CustomHeader
               label="Operating Systems"
               style={{ paddingLeft: '16px' }}

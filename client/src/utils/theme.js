@@ -1,15 +1,41 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 
 // ref: https://material-ui.com/customization/default-theme/
-const COLOR_PRIMARY = '#7696CC'
-const COLOR_SECONDARY = '#7696CC'
+
+export const COLOR_DARKEST_GREY = '#1E1E1E'
+export const COLOR_DARK_GREY = '#222222'
+export const COLOR_MEDIUM_GREY = '#323232'
+export const COLOR_LIGHT_GREY = '#7E7E7E'
+export const COLOR_PINK = '#E6007A'
+export const COLOR_BLUE = '#31CCFF'
+export const COLOR_PURPLE = '#7434BB'
+export const COLOR_LINUX_BLUE = '#1793D1'
+export const COLOR_ORANGE = '#F65314'
+export const COLOR_GREEN = '#C8D023'
+
 const MAX_WIDTH = 1400
 const BOX_SHADOW =
   'rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 1px 6px'
 
 const palette = {
-  primary: getColorPalette(COLOR_PRIMARY),
-  secondary: getColorPalette(COLOR_SECONDARY),
+  type: 'dark',
+  background: {
+    paper: COLOR_DARK_GREY,
+    default: COLOR_DARK_GREY,
+  },
+  primary: {
+    light: '#FFFFFF',
+    main: '#FFFFFF',
+    dark: '#FFFFFF',
+    contrastText: '#FFFFFF',
+  },
+  secondary: {
+    light: COLOR_BLUE,
+    main: COLOR_PINK,
+    dark: COLOR_PURPLE,
+    contrastText: '#FFFFFF',
+  },
+  divider: '#FFFFFF',
 }
 
 const shape = {
@@ -46,6 +72,11 @@ const theme = {
   shadows: ['none', ...Array(24).fill(BOX_SHADOW)],
 
   overrides: {
+    MuiTableCell: {
+      root: {
+        color: 'white !important',
+      },
+    },
     MuiTabs: {
       root: {
         color: defaultTheme.palette.text.primary,
@@ -136,7 +167,7 @@ const theme = {
         transition: 'all .1s ease',
         boxShadow: 'inset 1px 1px 5px -2px rgba(0,0,0,0.2)',
         '&:focus': {
-          boxShadow: `0px 0px 0px 2px ${COLOR_PRIMARY}`,
+          boxShadow: `0px 0px 0px 2px ${COLOR_DARK_GREY}`,
           background: defaultTheme.palette.common.white,
         },
       },
@@ -179,12 +210,6 @@ const theme = {
       complex: 275,
     },
   },
-}
-
-function getColorPalette(col) {
-  return {
-    main: col,
-  }
 }
 
 export default createMuiTheme(theme)

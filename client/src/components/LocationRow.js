@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import { countries } from '../utils/countries'
 
+import { COLOR_PINK, COLOR_PURPLE } from '../utils/theme'
+
 const styles = theme => ({
   numberOfNodes: {
     width: '100px!',
@@ -24,8 +26,7 @@ const styles = theme => ({
 
 class LocationRow extends Component {
   render() {
-    const { classes, numberOfNodes, country, ...rowProps } = this.props
-
+    const { classes, index, numberOfNodes, country, ...rowProps } = this.props
     return (
       <div className={classes.root} {...rowProps}>
         <Grid container spacing={24}>
@@ -34,6 +35,9 @@ class LocationRow extends Component {
               inline
               variant="body1"
               className={classes.numberOfNodes}
+              style={
+                index < 2 ? { color: COLOR_PINK } : { color: COLOR_PURPLE }
+              }
             >
               {numberOfNodes}
             </Typography>

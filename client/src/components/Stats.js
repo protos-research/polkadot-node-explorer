@@ -61,6 +61,7 @@ class Stats extends React.Component {
                     label="Nodes online (currently)"
                     data={nodes.length}
                     isInline={true}
+                    color="pink"
                   />
                 )
               }}

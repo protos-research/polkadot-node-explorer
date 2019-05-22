@@ -7,6 +7,8 @@ import Chart from '../components/Chart'
 import Anchor from '../components/Anchor'
 import Queries from '../constants/queries'
 
+import { COLOR_PINK } from '../utils/theme'
+
 const styles = theme => ({
   root: {
     marginBottom: theme.spacing.unit * 10,
@@ -28,7 +30,7 @@ class NodeMonitor extends React.Component {
         {
           type: 'line',
           backgroundColor: 'rgba(0, 0, 0, 0)',
-          borderColor: 'black',
+          borderColor: COLOR_PINK,
           pointBackgroundColor: 'transparent',
           pointBorderColor: 'transparent',
           borderWidth: '2',
@@ -111,6 +113,7 @@ class NodeMonitor extends React.Component {
                   label="Average nodes online"
                   data={nodes.length}
                   isInline={true}
+                  color="blue"
                 />
               )
             }}

@@ -8,6 +8,13 @@ import {
 } from 'react-simple-maps'
 import { scaleLinear } from 'd3-scale'
 
+import {
+  COLOR_LIGHT_GREY,
+  COLOR_MEDIUM_GREY,
+  COLOR_PURPLE,
+  COLOR_PINK,
+} from '../utils/theme'
+
 const wrapperStyles = {
   width: '100%',
   maxWidth: 980,
@@ -45,7 +52,7 @@ class CustomMap extends Component {
 
     const nodeScale = scaleLinear()
       .domain([0, max / 14, max])
-      .range(['#dbdbdb', '#8c8c8c', '#494949'])
+      .range([COLOR_MEDIUM_GREY, COLOR_PURPLE, COLOR_PINK])
 
     return (
       <div style={wrapperStyles}>
@@ -81,19 +88,19 @@ class CustomMap extends Component {
                           fill: nodeScale(
                             this.getNumOfNodes(geography.properties.iso_a2)
                           ),
-                          stroke: '#8c8c8c',
+                          stroke: 'transparent',
                           strokeWidth: 0.75,
                           outline: 'none',
                         },
                         hover: {
-                          fill: '#303030',
-                          stroke: '#8c8c8c',
+                          fill: COLOR_LIGHT_GREY,
+                          stroke: 'transparent',
                           strokeWidth: 0.75,
                           outline: 'none',
                         },
                         pressed: {
-                          fill: '#303030',
-                          stroke: '#8c8c8c',
+                          fill: COLOR_LIGHT_GREY,
+                          stroke: 'transparent',
                           strokeWidth: 0.75,
                           outline: 'none',
                         },
