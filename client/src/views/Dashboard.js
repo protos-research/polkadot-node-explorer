@@ -39,12 +39,12 @@ class Landing extends React.PureComponent {
             <div className={classes.content}>
               <Stats />
               <NodeMonitor />
-              <Query query={Queries.GET_NETWORK_SNAPSHOTS}>
+              <Query query={Queries.GET_NETWORK_INFO}>
                 {({ loading, error, data }) => {
                   if (loading) return <LoadingIndicator />
                   if (error) return <div>Error</div>
 
-                  const nodesToRender = data.networkSnapshots[0].nodes
+                  const nodesToRender = data.networkInfo.nodes
 
                   const nodesPerCountry = nodesToRender.reduce(
                     (total, node) => {

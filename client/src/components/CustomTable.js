@@ -47,12 +47,12 @@ class CustomTable extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            <Query query={Queries.GET_NETWORK_SNAPSHOTS}>
+            <Query query={Queries.GET_NETWORK_INFO}>
               {({ loading, error, data }) => {
                 if (loading) return <CustomTableRow>Loading</CustomTableRow>
                 if (error) return <CustomTableRow>Error</CustomTableRow>
 
-                const nodesToRender = data.networkSnapshots[0].nodes
+                const nodesToRender = data.networkInfo.nodes
 
                 return nodesToRender.map((node, index) => (
                   <CustomTableRowQuery

@@ -100,12 +100,12 @@ class NodeMonitor extends React.Component {
       <div className={classes.root}>
         <div className={classes.nodeMonitor}>
           <Anchor id="monitor">Node Monitor</Anchor>
-          <Query query={Queries.GET_NETWORK_SNAPSHOTS}>
+          <Query query={Queries.GET_NETWORK_INFO}>
             {({ loading, error, data }) => {
               if (loading) return <div>Fetching</div>
               if (error) return <div>Error</div>
 
-              const { nodes } = data.networkSnapshots[0]
+              const { nodes } = data.networkInfo
 
               return (
                 <StatsCard

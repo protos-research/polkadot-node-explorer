@@ -1,17 +1,29 @@
 import gql from 'graphql-tag'
 
-const GET_NETWORK_SNAPSHOTS = gql`
+const GET_NETWORK_INFO = gql`
   {
-    networkSnapshots {
-      createdAt
+    networkInfo {
+      chain
+      nodeName
+      nodeVersion
       nodes {
         id
         ipAddress
         country
         region
         city
-        latLong
+        lat
+        lon
       }
+    }
+  }
+`
+
+const GET_NETWORK_SNAPSHOTS = gql`
+  {
+    networkSnapshots {
+      createdAt
+      nodeCount
     }
   }
 `
@@ -49,6 +61,7 @@ const BLOCK_SUBSCRIPTION = gql`
 `
 
 export default {
+  GET_NETWORK_INFO,
   GET_NETWORK_SNAPSHOTS,
   GET_LATEST_BLOCKS,
   GET_IP_DETAILS,

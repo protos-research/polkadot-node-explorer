@@ -48,12 +48,13 @@ class Stats extends React.Component {
         <Anchor>Stats</Anchor>
         <Grid container spacing={24}>
           <Grid item xs={3}>
-            <Query query={Queries.GET_NETWORK_SNAPSHOTS}>
+            <Query query={Queries.GET_NETWORK_INFO}>
               {({ loading, error, data }) => {
+                if (error) console.error(error)
                 if (loading) return <div>Fetching</div>
                 if (error) return <div>Error</div>
 
-                const { nodes } = data.networkSnapshots[0]
+                const { nodes } = data.networkInfo
 
                 return (
                   <StatsCard
