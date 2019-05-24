@@ -1,5 +1,6 @@
 import React from 'react'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import { Router, Route } from 'react-enroute'
 import queryString from 'qs'
 
@@ -30,6 +31,7 @@ export default class Routes extends React.Component {
     return (
       <ApolloProvider client={apolloClient}>
         <MuiThemeProvider theme={createMuiTheme(appTheme)}>
+          <CssBaseline />
           <Router location={this.state.pathname || '/'}>
             <Route path="/" component={Dashboard} />
             <Route path="*" component={Error404} />

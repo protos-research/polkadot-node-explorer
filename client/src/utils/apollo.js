@@ -14,7 +14,6 @@ const authLink = setContext(async (_, { headers }) => {
   }
 })
 
-
 const restLink = new RestLink({ uri: 'http://ip-api.com/json/' })
 const httpLink = createHttpLink({ uri: 'http://localhost:4000' })
 const wsLink = new WebSocketLink({
