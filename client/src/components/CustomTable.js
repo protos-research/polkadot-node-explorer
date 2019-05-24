@@ -43,22 +43,40 @@ class CustomTable extends Component {
               <CustomTableCell align="right">Server Name</CustomTableCell>
               <CustomTableCell align="right">Resolved IP</CustomTableCell>
               <CustomTableCell align="right">Location</CustomTableCell>
-              <CustomTableCell align="right">Status</CustomTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <Query query={Queries.GET_NETWORK_INFO}>
               {({ loading, error, data }) => {
-                if (loading) return <CustomTableRow>Loading</CustomTableRow>
+                if (loading) return null
                 if (error) return <CustomTableRow>Error</CustomTableRow>
 
                 const nodesToRender = data.networkInfo.nodes
 
+                // return nodesToRender.map((node, index) => (
+                //   <CustomTableRowQuery
+                //     index={index}
+                //     ipAddress={node.ipAddress}
+                //   />
+                // ))
+                const sortByCountry = (a, b) => {
+                  if (!a.country || !a.ipAddress) return 1
+                  else return -1
+                }
+
                 return nodesToRender.map((node, index) => (
-                  <CustomTableRowQuery
-                    index={index}
-                    ipAddress={node.ipAddress}
-                  />
+                  <TableRow key={index}>
+                    <CustomTableCell align="right">{index + 1}</CustomTableCell>
+                    <CustomTableCell align="right">{node.isp || '-'}</CustomTableCell>
+                    <CustomTableCell align="right">{node.as || '-'}</CustomTableCell>
+                    <CustomTableCell align="right">{node.ipAddress || '-'}</CustomTableCell>
+                    <CustomTableCell align="right">{ 
+                      (
+                        node.country && [node.city, 
+                        node.country].filter(a => a).join(', ')
+                      ) || '-'
+                    }</CustomTableCell>
+                  </TableRow>
                 ))
               }}
             </Query>

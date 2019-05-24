@@ -9,6 +9,8 @@ const GET_NETWORK_INFO = gql`
       nodes {
         id
         ipAddress
+        isp
+        asHandle
         country
         region
         city

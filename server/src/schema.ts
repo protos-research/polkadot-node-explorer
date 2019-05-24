@@ -24,6 +24,8 @@ type NetworkSnapshot {
 type Node {
   id: String
   ipAddress: String
+  isp: String
+  asHandle: String
   country: String
   region: String
   city: String

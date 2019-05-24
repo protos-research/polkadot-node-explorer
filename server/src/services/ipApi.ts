@@ -38,6 +38,8 @@ function mergeGeoIP(data: GeoIP, node: Polkadot.Node): Polkadot.Node {
     country: data.countryCode,
     region: data.regionName,
     city: data.city,
+    isp: data.isp,
+    asHandle: data.as,
     lat: data.lat && parseFloat(data.lat),
     lon: data.lon && parseFloat(data.lon)
   };
@@ -50,6 +52,7 @@ interface GeoIP {
   country: string;
   countryCode: string;
   isp: string;
+  as: string;
   lat: string;
   lon: string;
   query: string;

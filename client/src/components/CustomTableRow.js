@@ -54,4 +54,5 @@ const CustomTableRowQuery = graphql(Queries.GET_IP_DETAILS, {
   },
 })(CustomTableRow)
 
+
 export { CustomTableCell, CustomTableRowQuery }

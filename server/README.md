@@ -21,3 +21,7 @@ To develop on your local machine only:
 ## Deployment
 - It's designed to be deployed on a single machine. For example, on EC2 managed by Elastic Beanstalk.
 - simply run `make up` to start the server
+
+## GeoIP 
+- uses MaxMind GeoIP lite for offline resolution 
+- supplements the service with keycdn.com or ipstack.com

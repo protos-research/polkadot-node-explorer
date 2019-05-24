@@ -9,6 +9,8 @@ declare namespace Polkadot {
   interface Node {
     id: string;
     ipAddress: string;
+    isp: string;
+    asHandle: string;
     country: string;
     region: string;
     city: string;
