@@ -7,7 +7,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableHead from '@material-ui/core/TableHead'
 import Paper from '@material-ui/core/Paper'
 import TableRow from '@material-ui/core/TableRow'
-import { CustomTableCell, CustomTableRowQuery } from './CustomTableRow'
+import { CustomTableCell } from './CustomTableRow'
 import Queries from '../constants/queries'
 
 const CustomTableRow = ({ children }) => (
@@ -40,7 +40,6 @@ class CustomTable extends Component {
               <CustomTableCell align="right">
                 Internet Service Provider
               </CustomTableCell>
-              <CustomTableCell align="right">Server Name</CustomTableCell>
               <CustomTableCell align="right">Resolved IP</CustomTableCell>
               <CustomTableCell align="right">Location</CustomTableCell>
             </TableRow>
@@ -53,22 +52,15 @@ class CustomTable extends Component {
 
                 const nodesToRender = data.networkInfo.nodes
 
-                // return nodesToRender.map((node, index) => (
-                //   <CustomTableRowQuery
-                //     index={index}
-                //     ipAddress={node.ipAddress}
-                //   />
-                // ))
                 const sortByCountry = (a, b) => {
                   if (!a.country || !a.ipAddress) return 1
                   else return -1
                 }
 
-                return nodesToRender.map((node, index) => (
+                return nodesToRender.sort(sortByCountry).map((node, index) => (
                   <TableRow key={index}>
                     <CustomTableCell align="right">{index + 1}</CustomTableCell>
-                    <CustomTableCell align="right">{node.isp || '-'}</CustomTableCell>
-                    <CustomTableCell align="right">{node.as || '-'}</CustomTableCell>
+                    <CustomTableCell align="right">{node.asHandle || '-'}</CustomTableCell>
                     <CustomTableCell align="right">{node.ipAddress || '-'}</CustomTableCell>
                     <CustomTableCell align="right">{ 
                       (

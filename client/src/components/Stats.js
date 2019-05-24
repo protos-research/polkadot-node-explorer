@@ -1,4 +1,6 @@
 import React from 'react'
+import numeral from 'numeral'
+
 import { Query, withApollo, compose } from 'react-apollo'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
@@ -87,7 +89,7 @@ class Stats extends React.Component {
       <StatsCard
         size="small"
         label="Block Height"
-        data={this.state.blockHeight}
+        data={numeral(this.state.blockHeight).format('0,0')}
       />
     )
   }

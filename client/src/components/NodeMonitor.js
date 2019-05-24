@@ -1,4 +1,6 @@
 import React from 'react'
+import dayjs from 'dayjs'
+
 import { Query, withApollo, compose } from 'react-apollo'
 import { withStyles } from '@material-ui/core/styles'
 
@@ -65,27 +67,25 @@ class NodeMonitor extends React.Component {
     const { client } = this.props
     this.client = client
     this.client
-      .subscribe({
-        query: Queries.BLOCK_SUBSCRIPTION,
+      .query({
+        query: Queries.GET_NETWORK_SNAPSHOTS,
       })
-      .subscribe({
-        next: ({ data }) => {
-          const { newBlock = {} } = data
+      .then(({data, errors, loading}) => {
+        if (!data) return
+        const snapshots = data.networkSnapshots.reverse()
+        const oldDataSet = this.state.lineChartData.datasets[0]
+        const newDataSet = { ...oldDataSet }
+        newDataSet.data = snapshots.map(s => s.nodeCount)
 
-          const oldDataSet = this.state.lineChartData.datasets[0]
-          const newDataSet = { ...oldDataSet }
-          newDataSet.data.push(newBlock.blockHeight)
-
-          const newChartData = {
+        this.setState({
+          lineChartData: {
             ...this.state.lineChartData,
             datasets: [newDataSet],
-            labels: this.state.lineChartData.labels.concat(
-              new Date().toLocaleTimeString()
-            ),
+            labels: snapshots.map(s => dayjs(s.createdAt).format('MMM D h A'))
           }
-          this.setState({ lineChartData: newChartData })
-        },
+        })
       })
+
   }
 
   componentWillUnmount() {

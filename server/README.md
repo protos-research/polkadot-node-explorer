@@ -25,3 +25,6 @@ To develop on your local machine only:
 ## GeoIP 
 - uses MaxMind GeoIP lite for offline resolution 
 - supplements the service with keycdn.com or ipstack.com
+
+## Data Source
+- we are getting the data from the (PolkadotJS API)[https://polkadot.js.org/api/METHODS_RPC.html#system]
