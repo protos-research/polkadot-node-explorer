@@ -26,17 +26,14 @@ class NodeLocations extends React.Component {
       return nodesPerCountry[b] - nodesPerCountry[a]
     })
     const numOfNodesSorted = countriesSorted.map(key => nodesPerCountry[key])
-    return countriesSorted.map((country, i) => {
-      if (i < 9) {
-        return (
-          <LocationRow
-            index={i}
-            country={country}
-            numberOfNodes={numOfNodesSorted[i]}
-          />
-        )
-      }
-      return null
+    return countriesSorted.slice(0, 9).map((country, i) => {
+      return (
+        <LocationRow
+          index={i}
+          country={country}
+          numberOfNodes={numOfNodesSorted[i]}
+        />
+      )
     })
   }
   render() {

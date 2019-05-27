@@ -70,7 +70,7 @@ class NodeMonitor extends React.Component {
       .query({
         query: Queries.GET_NETWORK_SNAPSHOTS,
       })
-      .then(({data, errors, loading}) => {
+      .then(({ data, errors, loading }) => {
         if (!data) return
         const snapshots = data.networkSnapshots.reverse()
         const oldDataSet = this.state.lineChartData.datasets[0]
@@ -81,11 +81,10 @@ class NodeMonitor extends React.Component {
           lineChartData: {
             ...this.state.lineChartData,
             datasets: [newDataSet],
-            labels: snapshots.map(s => dayjs(s.createdAt).format('MMM D h A'))
-          }
+            labels: snapshots.map(s => dayjs(s.createdAt).format('MMM D h A')),
+          },
         })
       })
-
   }
 
   componentWillUnmount() {

@@ -60,14 +60,17 @@ class CustomTable extends Component {
                 return nodesToRender.sort(sortByCountry).map((node, index) => (
                   <TableRow key={index}>
                     <CustomTableCell align="right">{index + 1}</CustomTableCell>
-                    <CustomTableCell align="right">{node.asHandle || '-'}</CustomTableCell>
-                    <CustomTableCell align="right">{node.ipAddress || '-'}</CustomTableCell>
-                    <CustomTableCell align="right">{ 
-                      (
-                        node.country && [node.city, 
-                        node.country].filter(a => a).join(', ')
-                      ) || '-'
-                    }</CustomTableCell>
+                    <CustomTableCell align="right">
+                      {node.asHandle || '-'}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      {node.ipAddress || '-'}
+                    </CustomTableCell>
+                    <CustomTableCell align="right">
+                      {(node.country &&
+                        [node.city, node.country].filter(a => a).join(', ')) ||
+                        '-'}
+                    </CustomTableCell>
                   </TableRow>
                 ))
               }}

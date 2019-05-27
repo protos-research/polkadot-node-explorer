@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { renderToString } from 'react-dom/server'
 import tooltip from 'wsdm-tooltip'
 import {
   ComposableMap,
@@ -22,22 +23,16 @@ const wrapperStyles = {
 }
 
 class CustomMap extends Component {
-  constructor() {
-    super()
-    this.handleMouseMove = this.handleMouseMove.bind(this)
-    this.handleMouseLeave = this.handleMouseLeave.bind(this)
-  }
-
   componentDidMount() {
     this.tip = tooltip({
       className: 'custom-tooltip',
       styles: {
         'font-size': '0.75rem',
-        color: 'black',
+        'color': 'black',
         'background-color': 'white',
         'font-family': 'Helvetica',
         'border-radius': '3px',
-        width: '100px',
+        'width': '100px',
         'text-align': 'left',
         'line-height': '1.4',
       },
@@ -116,23 +111,23 @@ class CustomMap extends Component {
     )
   }
 
-  handleMouseMove(geography, evt) {
+  handleMouseMove = (geography, evt) => {
     const numOfNodes = this.getNumOfNodes(geography.properties.iso_a2)
     const nodeText = numOfNodes === 1 ? 'Node' : 'Nodes'
-    this.tip.show(`
-      <div>
-        ${geography.properties.name}
-        <br />
-        <span style="font-weight: bold">
-          ${numOfNodes}
-        </span>   
-        ${nodeText}
-      </div>
-    `)
+    this.tip.show(
+      renderToString(
+        <div>
+          {geography.properties.name}
+          <br />
+          <span style={{ fontWeight: 'bold' }}>{numOfNodes}</span> {nodeText}
+        </div>
+      )
+    )
+
     this.tip.position({ pageX: evt.pageX, pageY: evt.pageY })
   }
 
-  handleMouseLeave() {
+  handleMouseLeave = () => {
     this.tip.hide()
   }
 
