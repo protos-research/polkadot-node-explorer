@@ -1,7 +1,7 @@
 import { ApolloClient } from 'apollo-client'
-import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloLink } from 'apollo-link'
+import { HttpLink } from 'apollo-link-http'
 import { RestLink } from 'apollo-link-rest'
 import { setContext } from 'apollo-link-context'
 import { WebSocketLink } from 'apollo-link-ws'
@@ -15,7 +15,7 @@ const authLink = setContext(async (_, { headers }) => {
 })
 
 const restLink = new RestLink({ uri: 'http://ip-api.com/json/' })
-const httpLink = createHttpLink({ uri: 'http://localhost:4000' })
+const httpLink = new HttpLink({uri: 'http://localhost:4000'})
 const wsLink = new WebSocketLink({
   uri: `ws://localhost:4000/graphql`,
   options: {
