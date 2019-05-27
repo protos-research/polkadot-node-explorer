@@ -1,8 +1,8 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import theme from '../utils/theme'
-import { Small } from '../components/Text'
 import { withStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 
 import { COLOR_MEDIUM_GREY } from '../utils/theme'
 
@@ -12,7 +12,7 @@ function Footer({ classes }) {
     <footer className={classes.pageFooter}>
       <Grid container>
         <Grid item xs={6}>
-          <Small color="black">Copyright © 2019 Polkadot Node Explorer</Small>
+          <Typography>Copyright © 2019 Polkadot Node Explorer</Typography>
         </Grid>
       </Grid>
     </footer>

@@ -1,7 +1,6 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import { Typography } from '@material-ui/core'
 
 import { COLOR_DARKEST_GREY, COLOR_MEDIUM_GREY } from '../utils/theme'
 import CustomMap from '../components/CustomMap'
@@ -29,6 +28,7 @@ class NodeLocations extends React.Component {
     return countriesSorted.slice(0, 9).map((country, i) => {
       return (
         <LocationRow
+          key={i}
           index={i}
           country={country}
           numberOfNodes={numOfNodesSorted[i]}
@@ -40,9 +40,7 @@ class NodeLocations extends React.Component {
     const { classes, nodesPerCountry } = this.props
     return (
       <div className={classes.root}>
-        <Typography variant="h3" gutterBottom>
-          <Anchor id="locations">Node Locations</Anchor>
-        </Typography>
+        <Anchor id="locations" gutterBottom>Node Locations</Anchor>
         <Grid container>
           <Grid item xs={6} style={{ backgroundColor: COLOR_DARKEST_GREY }}>
             <CustomMap nodesPerCountry={nodesPerCountry} />

@@ -137,7 +137,11 @@ StatsCard.defaultProps = {
 StatsCard.propTypes = {
   size: PropTypes.string,
   label: PropTypes.string,
-  data: PropTypes.string,
+  data: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool
+  ]),
   isInline: PropTypes.bool,
 }
 export default withStyles(styles)(StatsCard)
