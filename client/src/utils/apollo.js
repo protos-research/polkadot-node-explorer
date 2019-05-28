@@ -5,6 +5,7 @@ import { HttpLink } from 'apollo-link-http'
 import { RestLink } from 'apollo-link-rest'
 import { setContext } from 'apollo-link-context'
 import { WebSocketLink } from 'apollo-link-ws'
+import config from '../config'
 
 const authLink = setContext(async (_, { headers }) => {
   return {
@@ -15,9 +16,9 @@ const authLink = setContext(async (_, { headers }) => {
 })
 
 const restLink = new RestLink({ uri: 'http://ip-api.com/json/' })
-const httpLink = new HttpLink({uri: 'http://localhost:4000'})
+const httpLink = new HttpLink({uri: config.GRAPHQL_HOST})
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000/graphql`,
+  uri: `ws://${config.GRAPHQL_HOST.replace(/https?:\/\//gi,'')}/graphql`,
   options: {
     reconnect: true,
   },

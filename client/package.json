@@ -5,7 +5,7 @@
   "author": "Mihai Listov, Thomas Zhou",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "NODE_ENV=production react-scripts build",
     "postbuild": "react-snap",
     "test": "react-scripts test",
     "format": "prettier --write '**/*.js'"
