@@ -37,7 +37,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 ### Deployment 
-S3 Hosting
+Setting up AWS S3 Hosting
 
 ```
 aws s3api create-bucket --bucket polkadot-explorer --region us-east-2 --acl public-read

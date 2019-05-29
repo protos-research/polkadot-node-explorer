@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon dist 0.0.0.0",
     "build": "tsc",
+    "start": "nodemon dist 0.0.0.0",
     "dev": "npm run dev-redis & npm run dev-server",
     "dev-server": "tsc -w & nodemon dist",
     "dev-redis": "docker run --rm -p 6379:6379 redis:alpine",
+    "docker-build": "docker build -t polkadot-explorer-server .", 
+    "docker": "docker run -v $(pwd):/var/www/app -p 4000:4000 polkadot-explorer-server",
+    "deploy-aws": "eb deploy",
     "test": "jest --verbose --forceExit",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "docs": "typedoc --theme minimal --out docs/html src"
