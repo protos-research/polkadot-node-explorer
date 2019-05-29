@@ -1,13 +1,18 @@
 import PolkadotNetwork from '../models/PolkadotNetwork';
+import { appendGeoIp } from '../services/ipApi';
 
 export default {
   networkInfo: async () => {
     const networkInfo = await PolkadotNetwork.getNetworkInfo();
-    return networkInfo;
+    const nodes = await PolkadotNetwork.getNetworkNodes();
+    const nodesWithGeoIp = await appendGeoIp(nodes);
+
+    return {...networkInfo, nodes: nodesWithGeoIp};
   },
   networkSnapshots: async () => {
-    const networkSnapshots = await PolkadotNetwork.getNetworkSnapshots();
-    // Note: to optimize for performance, we can always let the client parse this
-    return networkSnapshots.map(JSON.parse);
+    return await PolkadotNetwork.getNetworkSnapshots();
+  },
+  latestBlocks: async () => {
+    return await PolkadotNetwork.getLatestBlocks();
   },
 };

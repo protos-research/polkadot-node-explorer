@@ -1,50 +1,58 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
+
+import { COLOR_DARKEST_GREY, COLOR_MEDIUM_GREY } from '../utils/theme'
 import CustomMap from '../components/CustomMap'
 import CustomHeader from '../components/CustomHeader'
 import LocationRow from '../components/LocationRow'
 import CustomProgress from '../components/CustomProgress'
 import Anchor from '../components/Anchor'
-import { Typography } from '@material-ui/core';
 
 const styles = theme => ({
   root: {
     marginBottom: theme.spacing.unit * 10,
   },
-  locationInfo: {
-    boxShadow: '0px -30px 0px -29px black, 0px 30px 0px -29px black',
+  column: {
+    boxShadow: `0px -30px 0px -29px ${COLOR_MEDIUM_GREY}, 0px 30px 0px -29px ${COLOR_MEDIUM_GREY}`,
   },
 })
 
 class NodeLocations extends React.Component {
+  renderList = () => {
+    const { nodesPerCountry } = this.props
+    const countriesSorted = Object.keys(nodesPerCountry).sort(function(a, b) {
+      return nodesPerCountry[b] - nodesPerCountry[a]
+    })
+    const numOfNodesSorted = countriesSorted.map(key => nodesPerCountry[key])
+    return countriesSorted.slice(0, 9).map((country, i) => {
+      return (
+        <LocationRow
+          key={i}
+          index={i}
+          country={country}
+          numberOfNodes={numOfNodesSorted[i]}
+        />
+      )
+    })
+  }
   render() {
-    const { classes } = this.props
+    const { classes, nodesPerCountry } = this.props
     return (
       <div className={classes.root}>
-        <Typography variant="h3" gutterBottom>
-          <Anchor id="locations">Node Locations</Anchor>
-        </Typography>
+        <Anchor id="locations" gutterBottom>Node Locations</Anchor>
         <Grid container>
-          <Grid item xs={6} style={{ border: '1px solid lightgrey' }}>
-            <CustomMap />
+          <Grid item xs={6} style={{ backgroundColor: COLOR_DARKEST_GREY }}>
+            <CustomMap nodesPerCountry={nodesPerCountry} />
           </Grid>
-          <Grid item xs={3} className={classes.locationInfo}>
+          <Grid item xs={3} className={classes.column}>
             <CustomHeader
               label="Top locations"
               style={{ paddingLeft: '16px', paddingBottom: '24px' }}
             />
-            <LocationRow numberOfNodes="115" country="United States" />
-            <LocationRow numberOfNodes="105" country="Germany" />
-            <LocationRow numberOfNodes="87" country="Japan" />
-            <LocationRow numberOfNodes="23" country="France" />
-            <LocationRow numberOfNodes="19" country="Singapore" />
-            <LocationRow numberOfNodes="18" country="Netherlands" />
-            <LocationRow numberOfNodes="13" country="United Kingdom" />
-            <LocationRow numberOfNodes="8" country="Russia" />
-            <LocationRow numberOfNodes="8" country="Australia" />
+            {this.renderList()}
           </Grid>
-          <Grid item xs={3} className={classes.locationInfo}>
+          <Grid item xs={3} className={classes.column}>
             <CustomHeader
               label="Operating Systems"
               style={{ paddingLeft: '16px' }}

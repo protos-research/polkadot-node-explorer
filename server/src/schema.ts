@@ -13,25 +13,30 @@ type NetworkInfo {
   chain: String
   nodeName: String
   nodeVersion: String
+  nodes: [Node]
 }
 
 type NetworkSnapshot {
   createdAt: String
-  nodes: [Node]
+  nodeCount: Int
 }
 
 type Node {
   id: String
   ipAddress: String
+  isp: String
+  asHandle: String
   country: String
   region: String
   city: String
-  latLong: [Float]
+  lat: Float
+  lon: Float
 }
 
 type Query {
   networkInfo: NetworkInfo
   networkSnapshots: [NetworkSnapshot]
+  latestBlocks: [Block]
 }
 
 type Subscription {

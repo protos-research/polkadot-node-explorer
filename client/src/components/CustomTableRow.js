@@ -35,7 +35,7 @@ class CustomTableRow extends Component {
 
     return (
       <TableRow key={index}>
-        <CustomTableCell align="right">{index}</CustomTableCell>
+        <CustomTableCell align="right">{index + 1}</CustomTableCell>
         <CustomTableCell align="right">{ipInfo.isp}</CustomTableCell>
         <CustomTableCell align="right">{ipInfo.as}</CustomTableCell>
         <CustomTableCell align="right">{ipInfo.query}</CustomTableCell>

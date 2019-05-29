@@ -36,3 +36,11 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
+### Deployment 
+Setting up AWS S3 Hosting
+
+```
+aws s3api create-bucket --bucket polkadot-explorer --region us-east-2 --acl public-read
+aws s3 website s3://polkadot-explorer --index-document index.html --error-document 404.html
+aws s3 sync ./build s3://polkadot-explorer --delete --acl public-read
+```

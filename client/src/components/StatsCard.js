@@ -6,6 +6,8 @@ import Card from '@material-ui/core/Card'
 import PropTypes from 'prop-types'
 import CustomHeader from './CustomHeader'
 
+import { COLOR_MEDIUM_GREY, COLOR_PINK, COLOR_BLUE } from '../utils/theme'
+
 const styles = theme => ({
   item: {
     borderRadius: 0,
@@ -25,7 +27,15 @@ const styles = theme => ({
 
 class StatsCard extends Component {
   renderContent = () => {
-    const { classes, size, label, data, dataLabel, isInline } = this.props
+    const {
+      classes,
+      size,
+      label,
+      data,
+      dataLabel,
+      isInline,
+      color,
+    } = this.props
     const dataFontSize = {
       large: 'h2',
       small: 'h4',
@@ -51,6 +61,13 @@ class StatsCard extends Component {
         <Typography
           inline
           className={classes.data}
+          style={
+            color === 'pink'
+              ? { color: COLOR_PINK }
+              : color === 'blue'
+              ? { color: COLOR_BLUE }
+              : {}
+          }
           variant={dataFontSize[size]}
         >
           {data}
@@ -95,8 +112,8 @@ class StatsCard extends Component {
       small: '72px',
     }
     const shadow = {
-      large: '-24px 0px 0px -23px black',
-      small: '-16px 0px 0px -15px black',
+      large: `-24px 0px 0px -23px ${COLOR_MEDIUM_GREY}`,
+      small: `-16px 0px 0px -15px ${COLOR_MEDIUM_GREY}`,
     }
 
     return (
@@ -120,7 +137,11 @@ StatsCard.defaultProps = {
 StatsCard.propTypes = {
   size: PropTypes.string,
   label: PropTypes.string,
-  data: PropTypes.string,
+  data: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.bool
+  ]),
   isInline: PropTypes.bool,
 }
 export default withStyles(styles)(StatsCard)

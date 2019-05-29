@@ -5,6 +5,7 @@ module.exports = shield(
     Query: {
       networkInfo: allow,
       networkSnapshots: allow,
+      latestBlocks: allow,
     },
     Subscription: {
       newBlock: allow,

@@ -14,6 +14,8 @@ import redis from '../services/redis';
 import { constructTestServer } from './__utils';
 import pubsub from '../services/pubsub';
 
+import Polkadot from '../types/polkadot';
+
 describe('graphQL', function() {
   beforeAll(async () => {
 
@@ -33,27 +35,45 @@ describe('graphQL', function() {
         'nodeName': 'parity-polkadot',
         'nodeVersion': '0.4.0',
       };
+      const nodes = [{ipAddress: '0.0.0.0'}];
+      const nodesWithGeoIp = [
+        {ipAddress: '0.0.0.0', lat: 49.24892, lon: -123.1502117}
+      ];
       redis.hgetall = jest.fn(() => networkInfo);
+      redis.get = jest.fn(() => JSON.stringify(nodes));
+      redis.batchExec = jest.fn(function() {
+        return new Promise((resolve, reject) => resolve(nodesWithGeoIp));
+      });
+
       const query = gql`
         query {
           networkInfo {
             chain
   	        nodeVersion
  		        nodeName
+            nodes {
+              ipAddress
+              lat
+              lon
+            }
           }
         }
       `;
       const res = await this.query({ query });
+      res.errors && console.error(JSON.stringify(res.errors, undefined, 2));
       if (res.errors) throw res.errors;
-      expect(res.data.networkInfo).toEqual(networkInfo);
+      expect({
+        ...res.data.networkInfo
+      }).toEqual({
+        ...networkInfo,
+        nodes: nodesWithGeoIp,
+      });
     });
 
     it('networkSnapshots', async () => {
       const snapshot = {
         createdAt: new Date().toISOString(),
-        nodes: [
-          {ipAddress: '0.0.0.0', latLong: [49.24892, -123.1502117]}
-        ]
+        nodeCount: 1
       };
       const networkSnapshots = [
         JSON.stringify(snapshot)
@@ -63,10 +83,7 @@ describe('graphQL', function() {
         query {
           networkSnapshots {
             createdAt
-            nodes {
-              ipAddress
-              latLong
-            }
+            nodeCount
           }
         }
       `;
@@ -74,7 +91,32 @@ describe('graphQL', function() {
       if (res.errors) throw res.errors;
       expect(res.data.networkSnapshots).toEqual([snapshot]);
     });
+
+    it('latestBlocks', async () => {
+      const block = {
+        createdAt: new Date().toISOString(),
+        blockHeight: 9001,
+      };
+      const latestBlocks = [
+        JSON.stringify(block)
+      ];
+      redis.lrange = jest.fn(() => latestBlocks);
+      const query = gql`
+        query {
+          latestBlocks {
+            createdAt
+            blockHeight
+          }
+        }
+      `;
+      const res = await this.query({ query });
+      if (res.errors) throw res.errors;
+      expect(res.data.latestBlocks).toEqual([block]);
+    });
   });
+
+
+  // --- Subscriptions --- //
 
   describe('Subscription', () => {
     it('newBlock', (done) => {
