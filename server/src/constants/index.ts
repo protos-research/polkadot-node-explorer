@@ -10,7 +10,7 @@ export const redisKey =  {
 export const config = {
   SNAPSHOT_LIMIT: 1000,
   SNAPSHOT_QUERY_LIMIT: 100,
-  SAMPLING_PERIOD: 30, // in minutes
+  SAMPLING_PERIOD: 60 * 3, // in minutes
   REDIS_HOST: process.env.REDIS_HOST || 'localhost',
   POLKADOT_HOST: process.env.POLKADOT_HOST || 'wss://poc3-rpc.polkadot.io',
   BLOCK_HISTORY_LIMIT: 10,

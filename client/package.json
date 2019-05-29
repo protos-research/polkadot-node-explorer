@@ -7,6 +7,7 @@
     "start": "react-scripts start",
     "build": "NODE_ENV=production react-scripts build",
     "postbuild": "react-snap",
+    "deploy-s3": "aws s3 sync ./build s3://polkadot-explorer --delete --acl public-read",
     "test": "react-scripts test",
     "format": "prettier --write '**/*.js'"
   },
@@ -33,6 +34,7 @@
     "graphql-tag": "^2.10.1",
     "history": "^4.7.2",
     "i18n-iso-countries": "^4.0.0",
+    "lodash.sortby": "^4.7.0",
     "numeral": "^2.0.6",
     "prop-types": "^15.6.2",
     "qs": "^6.6.0",

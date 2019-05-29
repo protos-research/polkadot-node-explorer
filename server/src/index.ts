@@ -5,10 +5,12 @@ import { config } from './constants';
 import { server } from './apollo-server';
 
 server.listen().then((server: {url: string}) => {
-  logger.debug(`🚀  Server ready at ${server.url}`);
+  logger.debug(`🚀 Server 0.1.0 ready at ${server.url}`);
 });
 
-const job = new CronJob(`0 */${config.SAMPLING_PERIOD} * * * *`, polkadot.recordNetworkSnapshot);
+const job = new CronJob(`0 */${config.SAMPLING_PERIOD} * * * *`, async function() {
+  await polkadot.recordNetworkSnapshot();
+});
 
 polkadot.recordNetworkSnapshot();
 job.start();

@@ -15,13 +15,18 @@ import { Polkadot } from 'polkadot';
 
 
 const provider: ProviderInterface = new WsProvider(config.POLKADOT_HOST);
+let api: ApiPromise;
 
 async function recordNetworkSnapshot() {
   logger.debug('[polkadot] recording snapshot');
-  const api = await ApiPromise.create(provider);
+  if (!api) {
+    api = await ApiPromise.create(provider);
+  }
 
   // ref: https://polkadot.js.org/api/METHODS_RPC.html#json-rpc
-  return await api.rpc.system.networkState((state: NetworkState): void => {
+  const resp = api.rpc.system.networkState((state: NetworkState): void => {
+    logger.debug('[polkadot] snapshot received');
+
     const nodes: Polkadot.NodeState[] = [
       ...peersReducer(state.get('notConnectedPeers')),
       ...peersReducer(state.get('connectedPeers'))
@@ -35,6 +40,8 @@ async function recordNetworkSnapshot() {
     redis.set(redisKey.NETWORK_NODES, JSON.stringify(nodes.map(appendGeoIPLite)));
     redis.lpush(redisKey.NETWORK_SNAPSHOTS, JSON.stringify(networkSnapshot));
     redis.ltrim(redisKey.NETWORK_SNAPSHOTS, 0, config.SNAPSHOT_LIMIT);
+
+    logger.debug('[polkadot] snapshot created');
 
     async.mapLimit(nodes, 2, (node: Polkadot.NodeState) => {
       return setGeoIp(node.ipAddress);
@@ -65,7 +72,7 @@ async function subscribe() {
   const api = await ApiPromise.create(provider);
 
   return await api.rpc.chain.subscribeNewHead((header) => {
-    logger.debug(`[polkadot] new block added`);
+    // logger.debug(`[polkadot] new block added`);
     const createdAt = new Date().toISOString();
 
     pubsub.publish(events.BLOCK_ADDED, {

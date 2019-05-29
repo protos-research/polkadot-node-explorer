@@ -8,7 +8,8 @@ RUN apt-get update \
 WORKDIR /var/www/app
 
 COPY . .
-RUN npm install && npm run build
+
+RUN npm install && npm run build && mkdir /var/data
 
 EXPOSE 4000
-CMD redis-server --daemonize yes && npm start
+CMD redis-server --dir /var/data/ --daemonize yes && npm start

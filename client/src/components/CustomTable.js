@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Query } from 'react-apollo'
 import PropTypes from 'prop-types'
+import _sortBy from 'lodash.sortby'
 import { withStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -50,14 +51,22 @@ class CustomTable extends Component {
                 if (loading) return null
                 if (error) return <CustomTableRow>Error</CustomTableRow>
 
-                const nodesToRender = data.networkInfo.nodes
+                // Clean out faulty addresses
+                const nodesToRender = data.networkInfo.nodes.map(node => {
+                  if (!node.ipAddress) {
+                    return {
+                      ...node, 
+                      country: null,
+                      city: null, 
+                      region: null, 
+                      asHandle: null
+                    }
+                  } else {
+                    return node
+                  }
+                })
 
-                const sortByCountry = (a, b) => {
-                  if (!a.country || !a.ipAddress) return 1
-                  else return -1
-                }
-
-                return nodesToRender.sort(sortByCountry).map((node, index) => (
+                return _sortBy(nodesToRender, ['country']).map((node, index) => (
                   <TableRow key={index}>
                     <CustomTableCell align="right">{index + 1}</CustomTableCell>
                     <CustomTableCell align="right">
