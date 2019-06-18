@@ -35,6 +35,7 @@ const GET_LATEST_BLOCKS = gql`
     latestBlocks {
       createdAt
       blockHeight
+      parentHash
     }
   }
 `
@@ -58,6 +59,7 @@ const BLOCK_SUBSCRIPTION = gql`
     newBlock {
       blockHeight
       createdAt
+      parentHash
     }
   }
 `

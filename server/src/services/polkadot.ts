@@ -13,7 +13,6 @@ import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { setGeoIp } from './ipApi';
 import { Polkadot } from 'polkadot';
 
-
 const provider: ProviderInterface = new WsProvider(config.POLKADOT_HOST);
 let api: ApiPromise;
 
@@ -74,16 +73,19 @@ async function subscribe() {
   return await api.rpc.chain.subscribeNewHead((header) => {
     // logger.debug(`[polkadot] new block added`);
     const createdAt = new Date().toISOString();
+    const parentHash = header.parentHash.toString();
 
     pubsub.publish(events.BLOCK_ADDED, {
       newBlock: {
-        blockHeight: parseInt(header.blockNumber.toString()),
         createdAt: new Date(),
+        blockHeight: parseInt(header.blockNumber.toString()),
+        parentHash,
       }
     });
     const block: Schema.Block = {
       createdAt,
-      blockHeight: parseInt(header.blockNumber.toString())
+      blockHeight: parseInt(header.blockNumber.toString()),
+      parentHash,
     };
     redis.lpush(redisKey.LATEST_BLOCKS, JSON.stringify(block));
     redis.ltrim(redisKey.LATEST_BLOCKS, 0, config.BLOCK_HISTORY_LIMIT);

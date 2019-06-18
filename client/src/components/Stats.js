@@ -3,7 +3,9 @@ import numeral from 'numeral'
 
 import { Query, withApollo, compose } from 'react-apollo'
 import { withStyles } from '@material-ui/core/styles'
+import { Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
+import { COLOR_PINK } from '../utils/theme'
 
 import Queries from '../constants/queries'
 import StatsCard from '../components/StatsCard'
@@ -17,7 +19,7 @@ const styles = theme => ({
 
 class Stats extends React.Component {
   state = {
-    blockHeight: null,
+    latestBlock: {},
     blockTimes: [],
   }
 
@@ -31,7 +33,7 @@ class Stats extends React.Component {
       .subscribe({
         next: ({ data }) => {
           const { newBlock = {} } = data
-          this.recordBlockTime(newBlock.blockHeight)
+          this.recordBlockTime(newBlock)
         },
       })
   }
@@ -79,17 +81,36 @@ class Stats extends React.Component {
           <Grid item xs={3}>
             {this.renderAverage()}
           </Grid>
+          <Grid item xs={3}>
+            {this.renderLatestBlock()}
+          </Grid>
         </Grid>
       </div>
     )
   }
 
+  renderLatestBlock = () => {
+    const { latestBlock={} } = this.state
+
+    return (
+      <div>   
+        <Anchor>Parent Hash</Anchor>   
+        <a href={`https://polkascan.io/pre/alexander/system/block/${latestBlock.parentHash}`} target="_blank">
+          <Typography style={{color: COLOR_PINK, textDecoration: 'none'}}>
+            {latestBlock.parentHash}
+          </Typography>
+        </a>
+      </div>
+    )
+  }
+
   renderBlockHeight = () => {
+    const { latestBlock={} } = this.state
     return (
       <StatsCard
         size="small"
         label="Block Height"
-        data={numeral(this.state.blockHeight).format('0,0')}
+        data={numeral(latestBlock.blockHeight).format('0,0')}
       />
     )
   }
@@ -133,11 +154,11 @@ class Stats extends React.Component {
     )
   }
 
-  recordBlockTime = blockHeight => {
+  recordBlockTime = latestBlock => {
     const time = Date.now() / 1000
     const { blockTimes } = this.state
     const newBlockTimes = [time, ...blockTimes].slice(0, 100)
-    this.setState({ blockTimes: newBlockTimes, blockHeight })
+    this.setState({ latestBlock, blockTimes: newBlockTimes })
   }
 }
 

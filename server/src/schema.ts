@@ -7,6 +7,7 @@ scalar DateTime
 type Block {
   blockHeight: Int
   createdAt: DateTime
+  parentHash: String
 }
 
 type NetworkInfo {

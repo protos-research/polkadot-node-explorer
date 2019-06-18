@@ -8,6 +8,7 @@ declare namespace Schema {
   interface Block {
     createdAt: string;
     blockHeight: number;
+    parentHash: string;
   }
 
   interface NetworkSnapshot {
