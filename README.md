@@ -3,4 +3,3 @@ A dashboard to view the Polkadot network size and geographic distribution over t
 
 - [client docs](client/README.md)
 - [server docs](server/README.md)
-- [infrastructure docs](infrastructure/README.md)
