@@ -35,7 +35,6 @@ export default ({ children }) => (
             Node Explorer
           </Typography>
           <Typography variant="overline" style={{ letterSpacing: '0.2em' }}>
-            about
           </Typography>
         </Toolbar>
       </AppBar>

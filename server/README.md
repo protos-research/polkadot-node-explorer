@@ -1,36 +1,39 @@
+## Project Status
+Currently the frontend application is completed. 
+
+The server is retrieving network data from the (PolkadotJS API)[https://polkadot.js.org/api/METHODS_RPC.html#system]. The original intent was to implement a LibP2P based node crawler to get a statistical snapshot of the nodes in the Polkadot network.
+
 
 ## Infrastructure Overview
-- Uses `docker-compose` to manage multiple containers on a single machine
 - Redis for data storage
-- Node.js server using `apollo-server` framework to create a GraphQL endpoint
-- Uses the [GraphQl subscription](https://graphql.github.io/graphql-spec/June2018/#sec-Subscription) support to abstract and manage real time communications over web socket transport
-- Uses TypeScript for type annotation
-
+- Node.js GraphQL server using `apollo-server` and `apollo-shield`
+- Uses [GraphQl subscription](https://graphql.github.io/graphql-spec/June2018/#sec-Subscription) support manage real time communications over web socket transport
+- Currently retrieves the network info via the PolkadotJS API
+- Uses MaxMind GeoIP lite for offline resolution 
+- Client application is built as a single page application using `react` and `apollo-client`
 
 ## Development 
-You can choose to either develop fully in a Docker environment or running the Redis container and Node.js server on your host machine
-
 To develop using a Docker environment: 
-- `npm run docker-build` to build docker image
-- `npm run docker` to start docker container
-- `tsc -w ` to watch for typescript file changes and automatically rebuild.
-- The Docker container is setup to use a bound volume so that the source code on your host machine will be linked to work directory of the container.
+- It's designed to be deployed on a single machine. For example, on EC2 managed by Elastic Beanstalk.
+- We've also provided a `docker-compose.yml` as an example to use in development.  
+- Ensure that the environment variable `POLKADOT_HOST` in `server/src/constants/index.ts` has a working endpoint. By default it's set to use `wss://poc3-rpc.polkadot.io`
 
-To develop on your local machine: 
-- run `npm run dev-redis` in one terminal to start the Redis image in a Docker container while exposing the default Redis port
-- run `npm run dev-server` in a second terminal to watch typescript and start the Node.js server
+Start the server
+```
+cd server
+npm run docker-build
+npm run docker  
+```
+
+Start the client
+```
+cd client
+npm start
+```
 
 ## Deployment
-- It's designed to be deployed on a single machine. For example, on EC2 managed by Elastic Beanstalk.
+The client is a single page application and can be deployed on any static site hosting service such as: 
+- AWS S3 Hosting + Cloudfront, Firebase Hosting, Netlify etc. 
 
-```
-docker build -t polkadot-explorer-server .
-docker run -p 4000:4000 polkadot-explorer-server  
-```
-
-## GeoIP 
-- uses MaxMind GeoIP lite for offline resolution 
-- supplements the service with keycdn.com or ipstack.com
-
-## Data Source
-- we are getting the data from the (PolkadotJS API)[https://polkadot.js.org/api/METHODS_RPC.html#system]
+The server is setup as a single Docker container and can be hosted using any Cloud platform that supports Docker 
+- AWS Elastic Beanstalk, Heroku or Google App Engine.

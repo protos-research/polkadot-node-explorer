@@ -5,13 +5,13 @@ import { withStyles } from '@material-ui/core/styles'
 import Head from '../components/Head'
 import PageContainer from '../components/PageContainer'
 import Centered from '../components/Centered'
-import NavBar from '../components/Navbar'
 import Stats from '../components/Stats'
 import NodeMonitor from '../components/NodeMonitor'
 import NodeLocations from '../components/NodeLocations'
 import NodeList from '../components/NodeList'
 import Queries from '../constants/queries'
 import LoadingIndicator from '../components/LoadingIndicator'
+// import NavBar from '../components/Navbar'
 
 const styles = theme => ({
   root: {
@@ -35,7 +35,7 @@ class Landing extends React.PureComponent {
         <Head title="Polkadot Node Explorer" />
         <Centered container>
           <div className={classes.root}>
-            <NavBar />
+            {/* <NavBar /> */}
             <div className={classes.content}>
               <Stats />
               <NodeMonitor />
