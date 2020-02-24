@@ -95,7 +95,7 @@ class Stats extends React.Component {
     return (
       <div>   
         <Anchor>Parent Hash</Anchor>   
-        <a href={`https://polkascan.io/pre/alexander/system/block/${latestBlock.parentHash}`} target="_blank">
+        <a href={`https://polkascan.io/pre/alexander/system/block/${latestBlock.parentHash}`} target="_blank" rel="noreferrer noopener">
           <Typography style={{color: COLOR_PINK, textDecoration: 'none'}}>
             {latestBlock.parentHash}
           </Typography>
