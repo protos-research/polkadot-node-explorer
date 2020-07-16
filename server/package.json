@@ -32,7 +32,7 @@
     "graphql-middleware": "^3.0.0",
     "graphql-shield": "^7.0.9",
     "graphql-tools": "^4.0.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "redis": "^2.8.0",
     "winston": "^3.2.1"
   },
